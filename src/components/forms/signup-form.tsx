@@ -25,11 +25,6 @@ const INITIAL_STATE = {
 export function SignUpForm() {
     const [formState, formAction] = useActionState(registerUserAction, INITIAL_STATE);
 
-    console.log("## will render on client ##")
-    console.log(formState);
-    console.log("###########################")
-
-
     return (
         <div className="w-full max-w-md">
             <form action={formAction}>
