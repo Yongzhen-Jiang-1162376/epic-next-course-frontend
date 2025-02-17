@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ZodErrors } from "@/components/custom/zod-errors";
+import { StrapiErrors } from "@/components/custom/strapi-errors";
+import { SubmitButton } from "@/components/custom/submit-button";
 
 
 const INITIAL_STATE = {
@@ -21,6 +24,12 @@ const INITIAL_STATE = {
 
 export function SignUpForm() {
     const [formState, formAction] = useActionState(registerUserAction, INITIAL_STATE);
+
+    console.log("## will render on client ##")
+    console.log(formState);
+    console.log("###########################")
+
+
     return (
         <div className="w-full max-w-md">
             <form action={formAction}>
@@ -40,6 +49,7 @@ export function SignUpForm() {
                                 type="text"
                                 placeholder="username"
                             />
+                            <ZodErrors error={formState?.zodErrors?.username} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
@@ -49,6 +59,7 @@ export function SignUpForm() {
                                 type="email"
                                 placeholder="name@example.com"
                             />
+                            <ZodErrors error={formState?.zodErrors?.email} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
@@ -58,10 +69,12 @@ export function SignUpForm() {
                                 type="password"
                                 placeholder="password"
                             />
+                            <ZodErrors error={formState?.zodErrors?.password} />
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col">
-                        <button className="w-full">Sign Up</button>
+                        <SubmitButton className="w-full" text="Sign Up" loadingText="Loading" />
+                        <StrapiErrors error={formState?.strapiErrors} />
                     </CardFooter>
                 </Card>
                 <div className="mt-4 text-center text-sm">

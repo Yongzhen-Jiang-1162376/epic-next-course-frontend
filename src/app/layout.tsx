@@ -4,7 +4,6 @@ import "./globals.css";
 import { getGlobalData, getGlobalPageMetadata } from "@/data/loeaders";
 import { Header } from "@/components/custom/header";
 import { Footer } from "@/components/custom/footer";
-import { getBuiltinModule } from "process";
 
 
 const geistSans = Geist({
@@ -32,7 +31,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const globalData = await getGlobalData();
-  console.dir(globalData, { depth: null });
+  // console.dir(globalData, { depth: null });
   return (
     <html lang="en">
       <body

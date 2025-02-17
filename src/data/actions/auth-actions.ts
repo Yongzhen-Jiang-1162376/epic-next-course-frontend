@@ -1,5 +1,6 @@
 "use server";
 import { z, ZodError } from "zod";
+import { registerUserService } from "@/data/services/auth-service";
 
 
 const schemaRegister = z.object({
@@ -26,22 +27,36 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     if (!validatedFields.success) {
         return {
             ...prevState,
-            zodError: validatedFields.error.flatten().fieldErrors,
-            strapiError: null,
+            zodErrors: validatedFields.error.flatten().fieldErrors,
+            strapiErrors: null,
             message: "Missing Fields. Failed to Register.",
         };
     }
 
-    // const fields = {
-    //     username: formData.get("username"),
-    //     password: formData.get("password"),
-    //     email: formData.get("email")
-    // }
+    const responseData = await registerUserService(validatedFields.data);
 
-    // console.log(fields);
+    console.log('------------------------------------------------------')
+    console.log(responseData)
 
-    return {
-        ...prevState,
-        data: "ok",
+    if (!responseData) {
+        return {
+            ...prevState,
+            strapiErrors: null,
+            zodErrors: null,
+            message: "Ops! Somthing went wrong. Please try again.",
+        };
+    }
+
+    if (responseData.error) {
+        return {
+            ...prevState,
+            strapiErrors: responseData.error,
+            ZodError: null,
+            message: "Failed to Register."
+        }
     };
+
+    console.log("###################");
+    console.log("User Registered Successfully", responseData.jwt);
+    console.log("###################");
 }
